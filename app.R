@@ -12,6 +12,8 @@ library(ggplot2)
 library(pdftools)
 library(tidyverse)
 
+source("./fonctions.R")
+
 # Define UI for application that draws a histogram
 ui <- fluidPage(
 
@@ -19,16 +21,9 @@ ui <- fluidPage(
     titlePanel("Roue wavelength"),
 
     # Sidebar with a slider input for number of bins 
-    sidebarLayout(
-        sidebarPanel(
-            fluidRow("Plutôt"),
-            fluidRow(textOutput('gauche')), 
-            fluidRow("ou"),
-            fluidRow(textOutput('droite'))
-            ),
-        # Show a plot of the generated distribution
-        mainPanel(plotOutput("distPlot"))
-    )
+    plotOutput("distPlot"),
+    
+    textOutput("text")
 )
 
 # Define server logic required to draw a histogram
@@ -36,7 +31,7 @@ server <- function(input, output) {
     
     cartes_tirees <- tirer_cartes(cartes)
 
-    output$text <- renderText(c("Plutôt", cartes_tirees$Gauche, "ou", cartes_tirees$Droite), sep="\n")
+    output$text <- renderText(c("Plutôt", cartes_tirees$Gauche, "ou", cartes_tirees$Droite), sep=" ")
     output$gauche <- renderText(cartes_tirees$Gauche)
     output$droite <- renderText(cartes_tirees$Droite)
     
